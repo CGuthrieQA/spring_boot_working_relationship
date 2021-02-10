@@ -2,7 +2,6 @@ package com.qa.barn.persistance.domain;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,7 +32,7 @@ public class Barn {
 	private double area;
 
 	@NotNull
-	@Column(name = "address")
+	//@Column(name = "address")
 	private String name;
 	
 	// one to many link
@@ -41,23 +40,22 @@ public class Barn {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Animal> animals;
 	
-	// CREATE - we don't have an id
-	public Barn(@NotNull String colour, @NotNull double area, @NotNull String name, List<Animal> animals) {
-		super();
-		this.colour = colour;
-		this.area = area;
-		this.name = name;
-		this.animals = animals;
-	}
-	
-	// UPDATE - we have an id
-	public Barn(Long id, @NotNull String colour, @NotNull double area, @NotNull String name, List<Animal> animals) {
+	// update - takes id
+	public Barn(Long id, @NotNull String colour, @NotNull double area, @NotNull String name) {
 		super();
 		this.id = id;
 		this.colour = colour;
 		this.area = area;
 		this.name = name;
-		this.animals = animals;
 	}
+	
+	// create - no id
+	public Barn(@NotNull String colour, @NotNull double area, @NotNull String name) {
+		super();
+		this.colour = colour;
+		this.area = area;
+		this.name = name;
+	}
+	
 	
 }

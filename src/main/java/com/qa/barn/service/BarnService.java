@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.qa.barn.dto.BarnDto;
+import com.qa.barn.exceptions.BarnNotFoundException;
 import com.qa.barn.persistance.domain.Barn;
 import com.qa.barn.persistance.repo.BarnRepo;
 import com.qa.barn.utils.BarnUtil;
@@ -51,13 +52,13 @@ public class BarnService {
 	
 	// READ by id
 	public BarnDto readById(Long id) {
-		return this.mapToDTO(this.repo.findById(id).orElseThrow()); // need the optional throw in case of error
+		return this.mapToDTO(this.repo.findById(id).orElseThrow(BarnNotFoundException::new)); // need the optional throw in case of error
 	}
 	
 	// UPDATE by id
 	public BarnDto update(BarnDto barnDto, Long id) {
 		// check if the record exists
-		Barn toUpdate = this.repo.findById(id).orElseThrow();
+		Barn toUpdate = this.repo.findById(id).orElseThrow(BarnNotFoundException::new);
 		// set the record to update
 		toUpdate.setName(barnDto.getName());
 		// check during the update for any nulls
@@ -71,6 +72,18 @@ public class BarnService {
 	public boolean delete(Long id) {
 		this.repo.deleteById(id); // deletes item by id
 		return !this.repo.existsById(id);
+	}
+	
+	
+	// custom methods
+	
+	public List<BarnDto> findByColour(String colour){
+		// similar to read method
+		return this.repo.findByColour(colour).stream().map(this::mapToDTO).collect(Collectors.toList());
+	}
+	public List<BarnDto> findByName(String name){
+		// similar to read method
+		return this.repo.findByName(name).stream().map(this::mapToDTO).collect(Collectors.toList());
 	}
 	
 }

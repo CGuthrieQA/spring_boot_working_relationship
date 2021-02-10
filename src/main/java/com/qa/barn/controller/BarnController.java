@@ -38,6 +38,10 @@ public class BarnController {
 	// PathVariable - URL pattern matching
 	// RequestBody - append data of message to body of the request
 	
+	
+	// ResponseEntity<>
+	// represents the WHOLE HTTP response status code, headers, even the body of the response.
+	
 	// CREATE
 	
 	// post
@@ -80,5 +84,18 @@ public class BarnController {
 		return this.service.delete(id) ? 
 				new ResponseEntity<>(HttpStatus.NO_CONTENT) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	// custom mappings
+	
+	@GetMapping("/colour/{colour}")
+	public ResponseEntity<List<BarnDto>> findByColour(@PathVariable String colour){
+		return ResponseEntity.ok(this.service.findByColour(colour));
+	}
+	
+	@GetMapping("/name/{name}")
+	public ResponseEntity<List<BarnDto>> findByName(@PathVariable String name){
+		return ResponseEntity.ok(this.service.findByName(name));
 	}
 }
